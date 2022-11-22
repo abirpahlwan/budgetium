@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const {getExpenses, getExpense, createExpense} = require('../controllers/expenseController')
+const {getExpenses, getExpense, createExpense, updateExpense, deleteExpense} = require('../controllers/expenseController')
 
 
 
@@ -13,12 +13,8 @@ router.get('/:id', getExpense);
 
 router.post('/', createExpense);
 
-router.delete('/:id', (req, res) => {
-    res.json({message: "Delete Expense"})
-});
+router.patch('/:id', updateExpense);
 
-router.patch('/:id', (req, res) => {
-    res.json({message: "Update Expense"})
-});
+router.delete('/:id', deleteExpense);
 
 module.exports = router;
