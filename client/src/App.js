@@ -1,7 +1,9 @@
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 
-import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
+
+import Home from "./pages/Home";
+import PageNotFound from "./pages/PageNotFound";
 
 
 function App() {
@@ -11,10 +13,9 @@ function App() {
         <Navbar></Navbar>
         <div className="pages">
           <Routes>
-            <Route
-              path="/"
-              element={<Home></Home>}
-            />
+            <Route index element={<Home/>}/>
+            <Route path="home" element={<Home/>}/>
+            <Route path="*" element={<PageNotFound/>}/>
           </Routes>
         </div>
       </BrowserRouter>
