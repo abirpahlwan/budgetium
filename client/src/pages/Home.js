@@ -15,11 +15,12 @@ const Home = () => {
             }
         };
 
-        fetchExpenses();
+        // fetchExpenses();
     }, []);
 
     return (
         <div className="home">
+            <h2>Home</h2>
             <div className="expense-list">
                 {expenses && expenses.map((expense) => (
                     // <p key={expense._id}>{expense.title}</p>

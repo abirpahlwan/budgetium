@@ -14,7 +14,7 @@
 body {
   background: var(--bg-gray);
   margin: 0;
-  font-family: "Poppins";
+  font-family: "Poppins", sans-serif;
 }
 
 .navbar {
@@ -64,7 +64,7 @@ a.navbar-item:hover{
 }
 
 .page{
-  max-width: 1024;
+  max-width: 1024px;
   padding: 10px 20px;
   margin: 0 auto;
 }
