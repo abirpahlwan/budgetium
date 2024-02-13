@@ -3,13 +3,11 @@ const express = require('express');
 const dotenv = require('dotenv').config();
 const mongoose = require('mongoose');
 
+// file imports
 const expenseRoutes = require('./routes/expenses');
-
-
 
 // app
 const app = express();
-
 
 // middlewares
 app.use(express.json());
@@ -20,7 +18,6 @@ app.use((req, res, next) => {
     next();
 });
 
-
 // database
 mongoose.connect(process.env.MONGODB_URI)
     .then(()=> {
@@ -30,10 +27,8 @@ mongoose.connect(process.env.MONGODB_URI)
         console.error(`MongoDB connection error!\n ${error}`);
     });
 
-
-// routes
+// APIs
 app.use('/api/expenses', expenseRoutes);
-
 
 // listen
 app.listen(process.env.PORT, (error) => {
