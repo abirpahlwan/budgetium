@@ -1,7 +1,5 @@
-const mongoose = require('mongoose');
-const Expense = require('../models/user')
 const User = require("../models/user");
-
+const jwt = require('jsonwebtoken');
 
 // Get a single user
 const login = async (req, res) => {
@@ -18,12 +16,24 @@ const login = async (req, res) => {
         return;
     }
 
+    const token = jwt.sign({
+        name: user.name,
+        email: user.email
+    }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRE
+    });
+
     res.status(200).json({
         success: true,
-        data: user
+        data: {
+            jwt: token,
+            user: {
+                name: user.name,
+                email: user.email
+            }
+        }
     });
 }
-
 
 // Create a new user
 const register = async (req, res) => {
