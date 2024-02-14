@@ -39,7 +39,7 @@ app.post('/api/register', async (req, res) => {
             email: req.body.email,
             password: req.body.password
         });
-        res.json({status: 'ok', data: {user: user}})
+        res.json({status: 'ok', data: user})
     } catch (error) {
         res.json({status: 'error', error: error});
     }
@@ -48,7 +48,7 @@ app.post('/api/register', async (req, res) => {
 app.post('/api/login', async (req, res) => {
     try {
         const user = await User.findOne({
-            email: req.body.email,
+            name: req.body.name,
             password: req.body.password
         });
 
@@ -57,8 +57,6 @@ app.post('/api/login', async (req, res) => {
         } else {
             res.json({status: 'error', error: 'Invalid credentials'});
         }
-
-        res.json({status: 'ok', data: user})
     } catch (error) {
         res.json({status: 'error', error: error});
     }
