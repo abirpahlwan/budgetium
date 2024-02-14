@@ -11,7 +11,7 @@ function Register() {
 
         try {
             const registerData = { name, email, password, passwordVerify };
-            const response = await fetch("http://localhost:4000/api/register", {
+            const response = await fetch("http://localhost:4000/api/user/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

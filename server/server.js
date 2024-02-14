@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 // file imports
 const expenseRoutes = require('./routes/expense');
+const userRoutes = require('./routes/user');
 
 // app
 const app = express();
@@ -30,37 +31,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 // APIs
 app.use('/api/expense', expenseRoutes);
-
-const User = require('./models/user');
-app.post('/api/register', async (req, res) => {
-    try {
-        const user = await User.create({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password
-        });
-        res.json({status: 'ok', data: user})
-    } catch (error) {
-        res.json({status: 'error', error: error});
-    }
-});
-
-app.post('/api/login', async (req, res) => {
-    try {
-        const user = await User.findOne({
-            name: req.body.name,
-            password: req.body.password
-        });
-
-        if(user){
-            res.json({status: 'ok', data: user});
-        } else {
-            res.json({status: 'error', error: 'Invalid credentials'});
-        }
-    } catch (error) {
-        res.json({status: 'error', error: error});
-    }
-});
+app.use('/api/user', userRoutes);
 
 // listen
 app.listen(process.env.PORT, (error) => {
