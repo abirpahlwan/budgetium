@@ -4,8 +4,9 @@ const dotenv = require('dotenv').config();
 const mongoose = require('mongoose');
 
 // file imports
-const expenseRoutes = require('./routes/expense');
+const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const expenseRoutes = require('./routes/expense');
 
 // app
 const app = express();
@@ -30,8 +31,9 @@ mongoose.connect(process.env.MONGODB_URI)
     });
 
 // APIs
-app.use('/api/expense', expenseRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/expense', expenseRoutes);
 
 // listen
 app.listen(process.env.PORT, (error) => {

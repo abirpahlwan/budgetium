@@ -38,7 +38,8 @@ const login = async (req, res) => {
 // Create a new user
 const register = async (req, res) => {
     try {
-        const user = await new User(req.body).save();
+        const user = new User(req.body);
+        await user.save();
 
         res.status(200).json({
             success: true,
