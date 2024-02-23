@@ -39,5 +39,5 @@ app.listen(process.env.PORT, (error) => {
         console.error(`Server start error!\n ${error}`);
         return;
     }
-    console.info(`Server started in ${process.env.NODE_ENV} mode on port ${process.env.PORT}!`);
+    console.info(`Server started in ${process.env.NODE_ENV} mode on port ${process.env.PORT}`);
 });
