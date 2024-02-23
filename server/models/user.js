@@ -26,6 +26,7 @@ const user = new mongoose.Schema({
     email: {
         type: String,
         required: true,
+        unique: true,
         index: true,
         lowercase: true,
         match: /^\S+@\S+\.\S+$/,
@@ -39,7 +40,6 @@ const user = new mongoose.Schema({
     phone: {
         type: String,
         required: true,
-        index: true,
         unique: true
     },
     isEmailVerified: {
