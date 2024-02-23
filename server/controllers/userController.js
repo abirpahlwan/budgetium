@@ -38,11 +38,7 @@ const login = async (req, res) => {
 // Create a new user
 const register = async (req, res) => {
     try {
-        const user = await User.create({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password
-        });
+        const user = await new User(req.body).save();
 
         res.status(200).json({
             success: true,
