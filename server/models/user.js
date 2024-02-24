@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+
+const toJSON = require('./toJSON');
 
 const roles = ['user', 'admin', 'doctor', 'patient'];
 
@@ -36,15 +39,16 @@ const user = new mongoose.Schema({
         required: true,
         minlength: 6,
         maxlength: 128,
+        private: true
     },
     phone: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     isEmailVerified: {
         type: Boolean,
-        default: true
+        default: true,
     },
     social: {
         facebook: String,
@@ -58,6 +62,16 @@ const user = new mongoose.Schema({
 }, {
     timestamps: true,
     collection: 'users'
+});
+
+user.plugin(toJSON);
+
+user.pre('save', async function (next) {
+    const user = this;
+    if (user.isModified('password')) {
+        user.password = await bcrypt.hash(user.password, 8);
+    }
+    next();
 });
 
 module.exports = mongoose.model('User', user);
