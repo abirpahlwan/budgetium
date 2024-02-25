@@ -1,60 +1,95 @@
 const validator = require('validator');
-const jwt = require('jsonwebtoken');
 const { StatusCodes, ReasonPhrases } = require('http-status-codes');
 
-const User = require("../models/user");
+const authMiddleware = require("../middlewares/authMiddleware");
+const userMiddleware = require("../middlewares/userMiddleware");
 
-const generateToken = (username, email) => {
-    const payload = {
-        sub: username,
-        email: email,
-        iat: Math.floor(Date.now() / 1000),
-    };
-    return jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRE});
-};
+const User = require("../models/user");
 
 const register = async (req, res, next) => {
     try {
         const user = await User.create(req.body);
-        const jwt = generateToken(user.username, user.email);
-        // or
-        // const user = new User(req.body);
-        // await user.save();
+        const jwt = authMiddleware.generateToken(user._id);
 
-        res.status(200).json({
+        res.status(StatusCodes.OK).json({
             success: true,
-            message: "User created",
+            message: ReasonPhrases.CREATED,
             data: {
                 jwt: jwt,
                 user: user
             }
         });
     } catch (error) {
-        res.status(400).json({
+        res.status(StatusCodes.BAD_REQUEST).json({
             success: false,
-            message: "User not created",
+            message: ReasonPhrases.BAD_REQUEST,
             error: error.message
         });
     }
 }
 
-const login = (req, res, next) => {
+const login = async (req, res, next) => {
+    try {
+        const { identifier, password } = req.body;
+
+        let user;
+        if (validator.isEmail(identifier)) {
+            user = await User.findOne({email: identifier});
+        } else if (validator.isMobilePhone(identifier)) {
+            user = await User.findOne({phone: identifier});
+        } else {
+            user = await User.findOne({username: identifier});
+        }
+
+        if (!user) {
+            res.status(StatusCodes.NOT_FOUND).json({
+                success: false,
+                message: ReasonPhrases.NOT_FOUND,
+            });
+            return;
+        }
+
+        const isMatch = await user.isPasswordMatch(password, user.password);
+        if (!isMatch) {
+            res.status(StatusCodes.UNAUTHORIZED).json({
+                success: false,
+                message: ReasonPhrases.UNAUTHORIZED,
+            });
+            return;
+        }
+
+        const jwt = authMiddleware.generateToken(user._id);
+
+        res.status(StatusCodes.OK).json({
+            success: true,
+            message: ReasonPhrases.OK,
+            data: {
+                jwt: jwt,
+                user: user
+            }
+        });
+    } catch (error) {
+        res.status(StatusCodes.BAD_REQUEST).json({
+            success: false,
+            message: ReasonPhrases.BAD_REQUEST,
+            error: error.message
+        });
+    }
+}
+
+const logout = async (req, res, next) => {
 
 }
 
-const logout = (req, res, next) => {
+const refreshToken = async (req, res, next) => {
 
 }
 
-const refreshToken = (req, res, next) => {
+const forgotPassword = async (req, res, next) => {
 
 }
 
-const forgotPassword = (req, res, next) => {
-
-}
-
-const resetPassword = (req, res, next) => {
+const resetPassword = async (req, res, next) => {
 
 }
 

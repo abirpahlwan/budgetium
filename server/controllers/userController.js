@@ -1,56 +1,30 @@
-const User = require("../models/user");
+const bcrypt = require('bcrypt');
+const validator = require('validator');
 const jwt = require('jsonwebtoken');
 
-// Get a single user
-const login = async (req, res) => {
-    const user = await User.findOne({
-        name: req.body.name,
-        password: req.body.password
-    });
+const userMiddleware = require("../middlewares/userMiddleware");
 
-    if(!user){
-        res.status(400).json({
-            success: false,
-            error: 'Invalid credentials'
-        });
-        return;
-    }
+const User = require("../models/user");
 
-    const token = jwt.sign({
-        name: user.name,
-        email: user.email
-    }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRE
-    });
 
-    res.status(200).json({
-        success: true,
-        data: {
-            jwt: token,
-            user: {
-                name: user.name,
-                email: user.email
-            }
-        }
-    });
+const getUsers = async (req, res, next) => {
+
 }
 
-// Create a new user
-const register = async (req, res) => {
-    try {
-        const user = new User(req.body);
-        await user.save();
+const getUser = async (req, res, next) => {
 
-        res.status(200).json({
-            success: true,
-            data: user
-        });
-    } catch (error) {
-        res.status(400).json({
-            success: false,
-            error: error.message
-        });
-    }
 }
 
-module.exports = {login, register};
+const createUser = async (req, res, next) => {
+
+}
+
+const updateUser = async (req, res, next) => {
+
+}
+
+const deleteUser = async (req, res, next) => {
+
+}
+
+module.exports = {getUsers, getUser, createUser, updateUser, deleteUser};

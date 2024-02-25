@@ -74,4 +74,9 @@ user.pre('save', async function (next) {
     next();
 });
 
+user.methods.isPasswordMatch = async function (password) {
+  const user = this;
+  return bcrypt.compare(password, user.password);
+};
+
 module.exports = mongoose.model('User', user);
